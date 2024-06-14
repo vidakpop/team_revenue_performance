@@ -10,7 +10,7 @@ from streamlit_lottie import st_lottie
 
 # Set page configuration
 st.set_page_config(
-    page_title='Team Performance Revenue Analysis',
+    page_title='UG Revenue Analysis',
     page_icon=':bar_chart:',
     layout='wide'
 )
@@ -28,9 +28,9 @@ preloader_placeholder = st.empty()
 
 # Show the preloader with the welcome text and animation
 with preloader_placeholder.container():
-    with st.spinner('Welcome to our Analytics app! Loading...'):
+    with st.spinner('Uasin Gishu Statistics Loading... Please wait'):
         st_lottie(path)  # Display Lottie animation
-        time.sleep(4)  # Simulate a delay to mimic loading time
+        time.sleep(5)  # Simulate a delay to mimic loading time
 
 # Clear the preloader after loading is complete
 preloader_placeholder.empty()
@@ -40,7 +40,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-color: #0e1117;
+        background-color: #00000;
         color: #c9d1d9;
     }
     </style>
@@ -78,12 +78,12 @@ st.markdown(
 
 # Directorate header
 st.markdown(
-    "<div style='background:'black''><h1 style='color:#ac2217;display:flex;justify-content: center'>DIRECTORATE OF LICENSING AND COMPLIANCE</h1></div>",
+    "<div style='background:'black''><h1 style='color:#FFD700;display:flex;justify-content: center'>DIRECTORATE OF LICENSING AND COMPLIANCE</h1></div>",
     unsafe_allow_html=True
 )
 
 # Main title
-st.title(':bar_chart: Team Performance Revenue Analysis')
+st.title(':bar_chart: Analysis of Team Performance and Revenue')
 
 # Sidebar setup
 st.sidebar.title('Revenue Team Analysis')
@@ -92,7 +92,7 @@ st.sidebar.subheader('Total Revenue Collected:')
 st.sidebar.markdown(f'Kshs. {total_revenue:,.0f}')
 
 # Rank teams by their total revenue
-df_rank = df.sort_values(by='TOTAL', ascending=False).reset_index(drop=True)
+df_rank = df.sort_values(by='TOTAL', ascending=False).reset_index(drop=False)
 df_rank['RANK'] = df_rank.index + 1
 
 # Display team rankings in the sidebar
@@ -166,7 +166,7 @@ with chart2:
     st.altair_chart(chart2, use_container_width=True)
 
 # Panel for stacked bar chart
-with st.expander("Stacked Bar Chart", expanded=True):
+with st.expander("Visual representation of each team's daily input", expanded=True):
     # Melt the DataFrame to long format for daily data
     df_melted = df.melt(id_vars=["TEAMS", "TOTAL"], var_name="Date", value_name="Amount")
 
@@ -177,7 +177,7 @@ with st.expander("Stacked Bar Chart", expanded=True):
         color=alt.Color('Date:N', title='Date'),
         tooltip=['TEAMS:N', 'Date:N', 'Amount:Q'],
     ).properties(
-        title="Stacked Bar Chart of Teams' Daily Contributions",
+        title="Chart of Teams' Daily Contributions",
         height=400,
         width=800
     ).interactive()
@@ -185,7 +185,7 @@ with st.expander("Stacked Bar Chart", expanded=True):
     st.altair_chart(stacked_bar_chart, use_container_width=True)
 
 # Panel for revenue trend line and area charts
-with st.expander("Revenue Trend Charts", expanded=True):
+with st.expander("Revenue Trends", expanded=True):
     columns = st.columns([1, 1])
 
     with columns[0]:
@@ -196,7 +196,7 @@ with st.expander("Revenue Trend Charts", expanded=True):
             color=alt.Color('TEAMS:N', title='TEAMS'),
             tooltip=['TEAMS:N', 'Date:N', 'Amount:Q']
         ).properties(
-            title="Revenue Collected Trend",
+            title="Revenue per Team",
             width=600
         ).interactive()
 
@@ -210,7 +210,7 @@ with st.expander("Revenue Trend Charts", expanded=True):
             color=alt.Color('TEAMS:N', title='TEAMS'),
             tooltip=['TEAMS:N', 'Date:N', 'Amount:Q']
         ).properties(
-            title="Revenue Collected Area Trend",
+            title="Revenue Collected Area Chart",
             height=400,
             width=600
         ).interactive()
@@ -218,7 +218,7 @@ with st.expander("Revenue Trend Charts", expanded=True):
         st.altair_chart(area_chart, use_container_width=True)
 
 # Panel for pie and donut charts
-with st.expander("Pie and Donut Charts", expanded=True):
+with st.expander("Ranking and Proportions", expanded=True):
     pie = st.columns([4, 1])
 
     with pie[0]:
@@ -228,7 +228,7 @@ with st.expander("Pie and Donut Charts", expanded=True):
             alt.Y('TEAMS:O', sort='-x'),
             color=alt.Color('TEAMS:N', legend=None)
         ).properties(
-            title='Team Distribution Ranking'
+            title='Team Ranking By Revenue'
         )
         st.altair_chart(pie_chart, use_container_width=True)
 
@@ -239,7 +239,7 @@ with st.expander("Pie and Donut Charts", expanded=True):
             color=alt.Color("TEAMS:N"),
             tooltip=['TEAMS:N', 'TOTAL:Q']
         ).properties(
-            title="Revenue Collected By Teams",
+            title="Proportion of Revenue per Team",
             height=400,
             width=400
         )
