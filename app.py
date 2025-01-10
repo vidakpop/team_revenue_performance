@@ -15,7 +15,7 @@ st.set_page_config(
     layout='wide'
 )
 
-# Function to fetch JSON data
+# Function to fetch JSON data jsonify
 def get(path: str):
     with open(path, "r") as p:
         return json.load(p)
